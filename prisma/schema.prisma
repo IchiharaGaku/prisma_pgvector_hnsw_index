@@ -1,0 +1,20 @@
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [pgvector(map: "vector", schema: "public")]
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+model Vector {
+  id                Int                          @id @default(autoincrement())
+  embedding         Unsupported("vector(1536)")?
+  embedding_content String
+  metadata          Json?
+  namespace         String                       @default("default")
+  created_at        DateTime                     @default(now())
+  updated_at        DateTime                     @default(now())
+}
